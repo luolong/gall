@@ -9,7 +9,7 @@ on multiple repositories (in parallel).
 
 == Git commands implemented:
 
-- [ ] `list`    --- List all git repositories gall will be operating on
+- [x] `list`    --- List all git repositories gall will be operating on
 - [ ] 'status'  --- Like `git status`, show current worktree status for all repositories
 - [ ]
 

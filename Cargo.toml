@@ -1,0 +1,23 @@
+[package]
+name = "gall"
+description = "Manage Git repositories with gall!"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+gix = { version = "0.43.1", features = ["prodash", "progress-tree"] }
+
+# CLI and error handling
+clap = { version = "4", features = ["derive", "cargo"] }
+thiserror = "1"
+anyhow = "1"
+time = "0.3"
+prodash = { version = "23.1.2", features = ["render-line", "render-line-crossterm", "render-tui", "render-tui-crossterm"] }
+crosstermion = "0.10.1"
+logger = "0.4.0"
+env_logger = "0.10.0"
+futures-lite = "1.13.0"
+jwalk = "0.8.1"
+
+[dev-dependencies]
+bacon = "2"

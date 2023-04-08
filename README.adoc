@@ -1,0 +1,21 @@
+= Manage your git repos with gall
+
+A command line utility to work with multiple Git repositories at a time.
+
+Most of the command line insofar as it has been implemented, will be following the
+https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain[git porcelain] command line interface
+with the notable difference that instead of working on a single repository, these commands will be executed
+on multiple repositories (in parallel).
+
+== Git commands implemented:
+
+- [ ] `list`    --- List all git repositories gall will be operating on
+- [ ] 'status'  --- Like `git status`, show current worktree status for all repositories
+- [ ]
+
+=== List
+
+List all git repositories gall will be operating on.
+
+[source,bash]
+gall [OPTIONS] list

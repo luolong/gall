@@ -1,4 +1,5 @@
 = Manage your git repos with gall
+:icons: font
 
 > **gall1** pass:c[| ɡɔːl |]
 > noun _[mass noun]_
@@ -13,8 +14,17 @@ on multiple repositories (in parallel).
 
 == Status of the project
 
-This is very much a Work In Progress effort.
-I am building this tool first and foremost for my own use and as a side projects, so progress may be slow.
+:warning-icon: 🚧
+
+[WARNING]
+**This is very much a Work In Progress effort.**
+I am building this tool first and foremost for my own use in order to make something useful and learn Rust in the process.
+
+The features may be incomplete or buggy, progress slow and inconsistent and code can be messy at times.
+
+I do however intend to accept pull requests and have a discussion around implementation details, ux and features that would move this project forward faster.
+
+Do not expect fast feedback cycle however. I do have a life and a job, but I will do my best.
 
 
 == Git commands implemented:

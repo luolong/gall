@@ -7,10 +7,13 @@
 
 A command line utility to work with multiple Git repositories at a time.
 
-Most of the command line insofar as it has been implemented, will be following the
-https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain[git porcelain] command line interface
-with the notable difference that instead of working on a single repository, these commands will be executed
-on multiple repositories (in parallel).
+Most of the command line will be following https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain[git porcelain] 
+command line interface insofar as it makes sense to `gall`.
+
+So, for those who are already familiar with basic features of git command line, using gall is almost a drop-in experience.
+Some of the output of the `gall` will differ significantly from `git`, as Git output does not really make sense in execution scenarios.
+
+To speed up the progress, `gall` will make a reasonable attempt at executing git operations in parallel.
 
 == Status of the project
 

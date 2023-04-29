@@ -1,9 +1,12 @@
 = Manage your git repos with gall
 :icons: font
 
-> **gall1** pass:c[| ɡɔːl |]
-> noun _[mass noun]_
-> 1 bold and impudent behaviour: _the bank had the gall to demand a fee._
+[quote,Google search result]
+____
+**gall1** pass:c[| ɡɔːl |]
+noun _[mass noun]_
+1 bold and impudent behaviour: _the bank had the gall to demand a fee._
+____
 
 A command line utility to work with multiple Git repositories at a time.
 

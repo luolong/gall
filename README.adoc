@@ -7,7 +7,9 @@ ____
 
 pass:c[/ɡɔːl/]
 
-rude behaviour showing a lack of respect that is surprising because the person behaving badly is not embarrassed synonym impudence
+rude behaviour showing a lack of respect that is surprising because the person behaving badly is not embarrassed 
+
+synonym: __impudence__
 
 * __Then they had the **gall** to complain!__
 * __I almost admired the utter **gall** of the man.__

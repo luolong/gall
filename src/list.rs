@@ -12,13 +12,13 @@ use gix::{progress, Kind, Progress};
 /// (that is, whether this is a bare repository, a worktree or a submodule)
 pub(crate) struct RepoPath {
     pub(crate) path: PathBuf,
-    pub(crate) kind: Kind,
+    pub(crate) _kind: Kind,
 }
 
 impl From<(PathBuf, Kind)> for RepoPath {
     fn from(value: (PathBuf, Kind)) -> Self {
-        let (path, kind) = value;
-        RepoPath { path, kind }
+        let (path, _kind) = value;
+        RepoPath { path, _kind }
     }
 }
 
@@ -33,9 +33,9 @@ pub(crate) fn find_repositories<P: Progress>(
 where
     <P::SubProgress as Progress>::SubProgress: Sync,
 {
-    let mut num_errors = 0usize;
+    let mut _num_errors = 0usize;
     let it = find_git_repository_workdirs(source_dir, progress.add_child("Searching repositories"));
-    Ok(it.map(|(path, kind)| RepoPath { path, kind }).collect())
+    Ok(it.map(|(path, _kind)| RepoPath { path, _kind }).collect())
 }
 
 fn find_git_repository_workdirs<P: Progress>(

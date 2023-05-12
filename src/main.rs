@@ -32,7 +32,7 @@ fn main() -> Result<()> {
 
     let verbose = !args.quiet;
     let progress = args.progress;
-    let threads = args.threads;
+    let _threads = args.threads;
     let progress_keep_open = args.progress_keep_open;
 
     let root = args

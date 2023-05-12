@@ -1,14 +1,11 @@
 mod command;
 mod list;
 mod options;
-mod shared;
+mod run;
 
-use std::{
-    path::PathBuf,
-    sync::{
-        atomic::{AtomicBool, Ordering},
-        Arc,
-    },
+use std::sync::{
+    atomic::{AtomicBool, Ordering},
+    Arc,
 };
 
 use anyhow::Result;
@@ -43,12 +40,12 @@ fn main() -> Result<()> {
         .unwrap_or_else(|| [std::path::Component::CurDir].iter().collect());
 
     match args.cmd {
-        Subcommands::List => shared::prepare_and_run(
+        Subcommands::List => run::prepare_and_run(
             "list",
             verbose,
             progress,
             progress_keep_open,
-            shared::STANDARD_RANGE,
+            run::STANDARD_RANGE,
             |progress, out, _err| {
                 for repo in find_repositories(root, progress)? {
                     writeln!(out, "{}", repo.path.display())?;

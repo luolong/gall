@@ -32,7 +32,7 @@ pub fn prepare_and_run<T: Send + 'static>(
         + Send
         + 'static,
 ) -> Result<T> {
-    crate::shared::init_env_logger();
+    crate::run::init_env_logger();
 
     match (verbose, progress) {
         (false, false) => run(
@@ -62,8 +62,6 @@ pub fn prepare_and_run<T: Send + 'static>(
         (true, true) | (false, true) => {
             use std::io::Write;
 
-            use crate::shared;
-
             enum Event<T> {
                 UiDone,
                 ComputationDone(Result<T>, Vec<u8>),
@@ -75,7 +73,7 @@ pub fn prepare_and_run<T: Send + 'static>(
                 std::sync::Arc::downgrade(&progress),
                 prodash::render::tui::Options {
                     title: "gitoxide".into(),
-                    frames_per_second: shared::DEFAULT_FRAME_RATE,
+                    frames_per_second: DEFAULT_FRAME_RATE,
                     stop_if_progress_missing: !progress_keep_open,
                     throughput: true,
                     ..Default::default()

@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "cargo",
+            "name": "gall list",
+            "cargoArgs": ["run"],
+            "executableArgs": ["list"],
+        },
+        
+    ]
+}

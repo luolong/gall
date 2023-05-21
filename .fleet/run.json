@@ -6,6 +6,5 @@
             "cargoArgs": ["run"],
             "executableArgs": ["list"],
         },
-        
     ]
 }

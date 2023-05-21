@@ -4,12 +4,14 @@ use std::{
 };
 
 use anyhow::Result;
-use gix::{progress, Kind, Progress};
+use gix::Kind;
+use gix::{progress, Progress};
 
 /// Simple structure pointing at a Git repository location on disk.
 ///
 /// This struct holds path to the repository on the file system and kind of a repository
 /// (that is, whether this is a bare repository, a worktree or a submodule)
+#[derive(Debug)]
 pub(crate) struct RepoPath {
     pub(crate) path: PathBuf,
     pub(crate) _kind: Kind,
@@ -27,7 +29,7 @@ impl From<(PathBuf, Kind)> for RepoPath {
 /// This will recursively search the whole file system tree under the given
 /// root path and return a list of paths to the directories that contain a Git repository.
 pub(crate) fn find_repositories<P: Progress>(
-    source_dir: impl AsRef<Path>,
+    source_dir: &impl AsRef<Path>,
     mut progress: P,
 ) -> anyhow::Result<Vec<RepoPath>>
 where
@@ -45,7 +47,11 @@ fn find_git_repository_workdirs<P: Progress>(
 where
     P::SubProgress: Sync,
 {
-    progress.init(None, progress::count("filesystem items"));
+    progress.init(
+        None,
+        progress::count("scanning filesystem for git repositories"),
+    );
+
     fn is_repository(path: &Path) -> Option<gix::Kind> {
         // Can be git dir or worktree checkout (file)
         if path.file_name() != Some(OsStr::new(".git")) {

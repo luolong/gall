@@ -1,20 +1,25 @@
 mod command;
 mod list;
 mod options;
-mod run;
 
-use std::sync::{
-    atomic::{AtomicBool, Ordering},
-    Arc,
+use std::{
+    io::{self, Write},
+    path::PathBuf,
+    sync::{
+        atomic::{AtomicBool, Ordering},
+        Arc,
+    },
 };
 
-use anyhow::Result;
+use anyhow::{ensure, Result};
 use clap::Parser;
+use list::find_repositories;
 
-use crate::{
-    list::find_repositories,
-    options::{Args, Subcommands},
-};
+use crate::options::Args;
+use gix::progress::{prodash, DoOrDiscard};
+
+pub type ProgressRange = std::ops::RangeInclusive<prodash::progress::key::Level>;
+pub const STANDARD_RANGE: ProgressRange = 2..=2;
 
 fn main() -> Result<()> {
     let args: Args = Args::parse_from(gix::env::args_os());
@@ -24,37 +29,49 @@ fn main() -> Result<()> {
         // SAFETY: we don't manipulate the environment from any thread
         time::util::local_offset::set_soundness(time::util::local_offset::Soundness::Unsound);
     }
+
+    // Make Ctrl+C work
     let should_interrupt = Arc::new(AtomicBool::new(false));
     gix::interrupt::init_handler({
         let should_interrupt = Arc::clone(&should_interrupt);
         move || should_interrupt.store(true, Ordering::SeqCst)
     })?;
 
-    let verbose = !args.quiet;
-    let progress = args.progress;
-    let _threads = args.threads;
-    let progress_keep_open = args.progress_keep_open;
-
-    let root = args
+    let source_dir = args
+        .global
         .root
-        .unwrap_or_else(|| [std::path::Component::CurDir].iter().collect());
+        .unwrap_or_else(|| PathBuf::from(&std::path::Component::CurDir));
+
+    let progress: std::sync::Arc<prodash::tree::Root> = prodash::tree::root::Options {
+        message_buffer_capacity: 200,
+        ..Default::default()
+    }
+    .into();
+    let sub_progress = progress.add_child("Searching for git repositories");
+
+    let repositories = find_repositories(&source_dir, DoOrDiscard::from(Some(sub_progress)))?;
+
+    ensure!(
+        !repositories.is_empty(),
+        "No git repositories found in {}",
+        source_dir.display()
+    );
 
     match args.cmd {
-        Subcommands::List => run::prepare_and_run(
-            "list",
-            verbose,
-            progress,
-            progress_keep_open,
-            run::STANDARD_RANGE,
-            |progress, out, _err| {
-                for repo in find_repositories(root, progress)? {
-                    writeln!(out, "{}", repo.path.display())?;
+        options::Subcommands::List => {
+            let mut out = io::stdout().lock();
+            for r in repositories {
+                let mut path = r.path.display().to_string();
+                if let Some(home_dir) = dirs::home_dir().map(|h| h.display().to_string()) {
+                    if path.starts_with(&home_dir) {
+                        path.replace_range(..home_dir.len(), "~")
+                    }
                 }
 
-                Ok(())
-            },
-        ),
-    }
-}
+                out.write_fmt(format_args!("{}\n", path))?;
+            }
+        }
+    };
 
-pub type ProgressRange = std::ops::RangeInclusive<prodash::progress::key::Level>;
+    Ok(())
+}

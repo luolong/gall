@@ -5,18 +5,22 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-gix = { version = "0.44", features = ["prodash", "progress-tree"] }
-
 # CLI and error handling
 clap = { version = "4", features = ["derive", "cargo"] }
 thiserror = "1"
 anyhow = "1"
 time = "0.3"
 crosstermion = "0.11"
+shellexpand = "3.1.0"
 logger = "0.4"
 env_logger = "0.10"
 futures-lite = "1.13"
 jwalk = "0.8"
+dirs = "5"
+
+[dependencies.gix]
+version = "0.44"
+features = ["prodash"]
 
 [dependencies.prodash]
 version = "25"

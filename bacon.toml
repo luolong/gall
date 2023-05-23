@@ -41,18 +41,14 @@ command = ["cargo", "doc", "--color", "always", "--no-deps", "--open"]
 need_stdout = false
 on_success = "back" # so that we don't open the browser at each change
 
-# You can run your application and have the result displayed in bacon,
-# *if* it makes sense for this crate. You can run an example the same
-# way. Don't forget the `--color always` part or the errors won't be
-# properly parsed.
+# Run `gall list` command on a parent directory
 [jobs.list]
 command = [
     "cargo", "run",
     "--color", "always",
-    "--",
-    "-C", "/",
+    "--", # put launch parameters for your program behind a `--` separator
+    "-C", "../",
     "list",
-    # put launch parameters for your program behind a `--` separator
 ]
 need_stdout = true
 allow_warnings = true

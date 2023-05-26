@@ -31,7 +31,7 @@ impl From<(PathBuf, Kind)> for RepoPath {
 pub(crate) fn find_repositories<P: Progress>(
     source_dir: &impl AsRef<Path>,
     mut progress: P,
-) -> anyhow::Result<Vec<RepoPath>>
+) -> Result<Vec<RepoPath>>
 where
     <P::SubProgress as Progress>::SubProgress: Sync,
 {
@@ -43,7 +43,7 @@ where
 fn find_git_repository_workdirs<P: Progress>(
     root: impl AsRef<Path>,
     mut progress: P,
-) -> impl Iterator<Item = (PathBuf, gix::Kind)>
+) -> impl Iterator<Item = (PathBuf, Kind)>
 where
     P::SubProgress: Sync,
 {
@@ -52,7 +52,7 @@ where
         progress::count("scanning filesystem for git repositories"),
     );
 
-    fn is_repository(path: &Path) -> Option<gix::Kind> {
+    fn is_repository(path: &Path) -> Option<Kind> {
         // Can be git dir or worktree checkout (file)
         if path.file_name() != Some(OsStr::new(".git")) {
             return None;
@@ -66,7 +66,7 @@ where
             }
         } else {
             // git files are always worktrees
-            Some(gix::Kind::WorkTree { is_linked: true })
+            Some(Kind::WorkTree { is_linked: true })
         }
     }
     fn into_workdir(git_dir: PathBuf) -> PathBuf {
@@ -82,7 +82,7 @@ where
 
     #[derive(Debug, Default)]
     struct State {
-        kind: Option<gix::Kind>,
+        kind: Option<Kind>,
     }
 
     let walk = jwalk::WalkDirGeneric::<((), State)>::new(root)

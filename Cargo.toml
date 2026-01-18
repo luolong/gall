@@ -7,20 +7,30 @@ edition = "2021"
 [dependencies]
 # CLI and error handling
 clap = { version = "4", features = ["derive", "cargo"] }
-thiserror = "1"
+thiserror = "2"
 anyhow = "1"
 time = "0.3"
-crosstermion = "0.11"
+crosstermion = { version = "0.16.0", optional = true, default-features = false }
+prodash = { version = "31.0.0", features = [
+    "render-line",
+    "render-line-crossterm",
+] } # transitive dependency of gitoxide-core
 shellexpand = "3"
 logger = "0.4"
-env_logger = "0.10"
-futures-lite = "1.13"
-jwalk = "0.8"
-dirs = "5"
+env_logger = "0.11"
+futures-lite = "2"
+dirs = "6"
 
-[dependencies.gix]
-version = "0.44"
-features = ["prodash"]
+gix = { version = "0.78.0", default-features = false, features = [
+    "command",
+    "status",
+    "interrupt",
+    "max-control",
+    "progress-tree",
+] }
+gitoxide-core = { version = "0.53.0", default-features = false, features = [
+    "organize",
+] }
 
 [dev-dependencies]
-bacon = "2"
+bacon = "3"

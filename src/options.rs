@@ -6,16 +6,6 @@ use shellexpand::tilde;
 #[clap(about = "Manage your git repos with gall.", version = clap::crate_version!())]
 #[clap(subcommand_required = true)]
 pub(crate) struct Args {
-    #[clap(flatten)]
-    pub(crate) global: GlobalOptions,
-
-    #[clap(subcommand)]
-    pub(crate) cmd: Subcommands,
-}
-
-/// Global command line options
-#[derive(Debug, clap::Parser)]
-pub(crate) struct GlobalOptions {
     /// Do not display verbose messages and progress information
     #[clap(long, short = 'q')]
     pub(crate) quiet: bool,
@@ -28,17 +18,14 @@ pub(crate) struct GlobalOptions {
     #[clap(short = 't', long)]
     pub(crate) threads: Option<usize>,
 
-    /// The progress TUI will stay up even though the work is already completed.
-    ///
-    /// Use this to be able to read progress messages or additional information visible in the TUI log pane.
-    #[clap(long, conflicts_with("quiet"), requires("progress"))]
-    pub(crate) progress_keep_open: bool,
-
     /// Run as if gall was started in <ROOT> instead of the current working directory.
     ///
     /// Defaults to the current working directory.
     #[clap(short = 'C', value_parser = parse_path)]
     pub(crate) root: Option<PathBuf>,
+
+    #[clap(subcommand)]
+    pub(crate) cmd: Subcommands,
 }
 
 #[derive(Debug, clap::Subcommand)]

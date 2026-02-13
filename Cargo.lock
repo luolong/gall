@@ -766,6 +766,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "exn"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5ca6badeb8a07b76663c7d7cb0903c1cc40c38d6fc06d3a2206780c63e8b9496"
+
+[[package]]
 name = "faster-hex"
 version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -886,12 +892,12 @@ dependencies = [
 name = "gall"
 version = "0.1.0"
 dependencies = [
- "anyhow",
  "bacon",
  "clap",
  "crosstermion",
  "dirs",
  "env_logger",
+ "exn",
  "futures-lite",
  "gitoxide-core",
  "gix 0.78.0",

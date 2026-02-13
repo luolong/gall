@@ -3,7 +3,7 @@ mod list;
 mod options;
 
 use std::{
-    io::{self, stdout, IsTerminal, Write},
+    io::{self, stdout, Write},
     sync::{
         atomic::{AtomicBool, Ordering},
         Arc,
@@ -30,10 +30,6 @@ fn main() -> Result<()> {
         })?;
     }
 
-    let verbose = !args.quiet;
-    let progress = args.progress;
-    let threads = args.threads;
-
     let source_dir = args
         .root
         .unwrap_or_else(|| [std::path::Component::CurDir].iter().collect());
@@ -41,18 +37,15 @@ fn main() -> Result<()> {
     let progress = prodash::tree::Root::new();
     let find_progress = progress.add_child("Discover Git repositories");
 
-    let output_is_terminal = stdout().is_terminal();
-    let line_ui = prodash::render::line(
+    let _renderer = prodash::render::line(
         stdout(),
         std::sync::Arc::downgrade(&progress),
-        prodash::render::line::Options {
-            output_is_terminal,
-            colored: output_is_terminal && true,
-            ..Default::default()
-        },
+        prodash::render::line::Options::default()
+            .auto_configure(prodash::render::line::StreamKind::Stdout),
     );
 
-    let repositories = find_repositories(&source_dir, DoOrDiscard::from(Some(find_progress)))?;
+    let repositories =
+        find_repositories(&source_dir, DoOrDiscard::from(Some(find_progress)), None)?;
 
     ensure!(
         !repositories.is_empty(),
